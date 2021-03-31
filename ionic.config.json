@@ -1,0 +1,7 @@
+{
+  "name": "pwapp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
