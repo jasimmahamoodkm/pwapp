@@ -1,5 +1,5 @@
 <template>
-  <base-layout page-title="PW App">
+  <base-layout>
     <CategoryGrid />
   </base-layout>
 </template>

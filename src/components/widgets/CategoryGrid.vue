@@ -7,20 +7,14 @@
   <ion-text color="primary ion-text-center">
     <h2>Categories</h2>
   </ion-text>
-  <ion-slides pager="true" :options="slideOpts">
-    <ion-slide>
-      <h1>Slide 1</h1>
-    </ion-slide>
-    <ion-slide>
-      <h1>Slide 2</h1>
-    </ion-slide>
-    <ion-slide>
-      <h1>Slide 3</h1>
-    </ion-slide>
-  </ion-slides>
+  <Slider />
   <ion-grid>
     <ion-row>
-      <ion-col v-for="category in categories" :key="category.id">
+      <ion-col
+        v-for="category in categories"
+        :key="category.id"
+        :router-link="`/categories/${category.name}`"
+      >
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{{ category.name }}</IonCardTitle>
@@ -47,14 +41,10 @@ import {
   IonIcon,
   modalController,
   IonText,
-  IonSlides,
-  IonSlide,
 } from "@ionic/vue";
 
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
 import Modal from "../widgets/Modal";
+import Slider from "../widgets/Slider";
 
 export default {
   components: {
@@ -69,8 +59,7 @@ export default {
     IonFabButton,
     IonIcon,
     IonText,
-    IonSlides,
-    IonSlide,
+    Slider,
   },
   methods: {
     async openModal() {
@@ -84,24 +73,15 @@ export default {
       return modal.present();
     },
   },
-  setup() {
-    // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
-    const slideOpts = {
-      initialSlide: 1,
-      speed: 400,
-    };
-    return { slideOpts };
-  },
-  data() {
-    return {
-      categories: [],
-    };
+  computed: {
+    categories() {
+      return this.$store.getters.categories;
+    },
   },
   mounted() {
-    const db = firebase.firestore();
-    const storage = firebase.storage();
+    var storage = this.$fire_base.storage;
     var storageRef = storage.ref();
-    db.collection("categories").onSnapshot((snapshot) => {
+    this.$fire_base.db.collection("categories").onSnapshot((snapshot) => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           var dat = change.doc.data();
@@ -112,7 +92,7 @@ export default {
               desc: dat.desc,
               image: url,
             };
-            this.categories.push(newDat);
+            this.$store.commit("add", newDat);
           });
         }
       });

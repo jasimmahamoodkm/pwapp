@@ -10,6 +10,10 @@ const routes = [
     path: "/categories",
     component: Home,
   },
+  {
+    path: "/categories/:id",
+    component: () => import("../pages/CategoryDetails.vue"),
+  },
 ];
 
 const router = createRouter({

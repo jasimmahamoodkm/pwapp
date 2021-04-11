@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{ pageTitle }}</ion-title>
+        <ion-title>Marine Shop</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -20,7 +20,6 @@ import {
   IonToolbar,
 } from "@ionic/vue";
 export default {
-  props: ["pageTitle"],
   components: {
     IonPage,
     IonHeader,
