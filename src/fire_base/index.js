@@ -17,6 +17,8 @@ firebase.initializeApp(firebaseConfig);
 const fire_base = {
   db: firebase.firestore(),
   storage: firebase.storage(),
+  storageVar: firebase.storage,
+  dbVar: firebase.firestore,
 };
 
 export default {

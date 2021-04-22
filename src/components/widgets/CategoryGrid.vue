@@ -1,5 +1,5 @@
 <template>
-  <ion-fab vertical="bottom" horizontal="end">
+  <ion-fab vertical="top" horizontal="end">
     <ion-fab-button v-on:click="openModal">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
@@ -13,9 +13,9 @@
       <ion-col
         v-for="category in categories"
         :key="category.id"
-        :router-link="`/categories/${category.name}`"
+        :router-link="`/${category.catid}`"
       >
-        <IonCard>
+        <IonCard v-if="category.parent == ''">
           <IonCardHeader>
             <IonCardTitle>{{ category.name }}</IonCardTitle>
           </IonCardHeader>
@@ -38,12 +38,12 @@ import {
   IonCardContent,
   IonFab,
   IonFabButton,
-  IonIcon,
   modalController,
   IonText,
 } from "@ionic/vue";
 
-import Modal from "../widgets/Modal";
+import { mapGetters, mapActions } from "vuex";
+import addCategoryModal from "../modals/addCategoryModal";
 import Slider from "../widgets/Slider";
 
 export default {
@@ -57,26 +57,23 @@ export default {
     IonCardContent,
     IonFab,
     IonFabButton,
-    IonIcon,
     IonText,
     Slider,
   },
   methods: {
     async openModal() {
       const modal = await modalController.create({
-        component: Modal,
+        component: addCategoryModal,
         cssClass: "my-custom-class",
-        componentProps: {
-          title: "Add Category",
-        },
       });
       return modal.present();
     },
+    ...mapActions("category", {
+      addCategory: "addCategory",
+    }),
   },
   computed: {
-    categories() {
-      return this.$store.getters.categories;
-    },
+    ...mapGetters("category", { categories: "allCategories" }),
   },
   mounted() {
     var storage = this.$fire_base.storage;
@@ -85,14 +82,17 @@ export default {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           var dat = change.doc.data();
+          var catId = change.doc.id;
           var tangRef = storageRef.child(dat.image);
           tangRef.getDownloadURL().then((url) => {
             var newDat = {
               name: dat.name,
               desc: dat.desc,
+              catid: catId,
               image: url,
+              parent: dat.parent,
             };
-            this.$store.commit("add", newDat);
+            this.addCategory(newDat);
           });
         }
       });

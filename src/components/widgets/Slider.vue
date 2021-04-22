@@ -1,25 +1,16 @@
 <template>
   <ion-slides :options="slideOpts">
     <ion-slide>
-      <div class="slide">
-        <img src="../../slider/1.jpg" />
-        <h2>Welcome</h2>
-      </div>
+      <img alt="1" src="../../slider/1.jpg" />
     </ion-slide>
-
     <ion-slide>
-      <img src="../../slider/2.jpg" />
-      <h2>What is Ionic?</h2>
+      <img alt="2" src="../../slider/2.jpg" />
     </ion-slide>
-
     <ion-slide>
-      <img src="../../slider/3.jpg" />
-      <h2>What is Appflow?</h2>
+      <img alt="3" src="../../slider/3.jpg" />
     </ion-slide>
-
     <ion-slide>
-      <img src="../../slider/4.jpg" />
-      <h2>Ready to Play?</h2>
+      <img alt="4" src="../../slider/4.jpg" />
     </ion-slide>
   </ion-slides>
 </template>
@@ -40,10 +31,6 @@ export default {
 };
 </script>
 <style>
-ion-slides {
-  height: 100%;
-}
-
 .swiper-slide {
   display: block;
 }

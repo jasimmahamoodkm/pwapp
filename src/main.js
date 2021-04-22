@@ -23,6 +23,34 @@ import "@ionic/vue/css/text-transformation.css";
 import "@ionic/vue/css/flex-utils.css";
 import "@ionic/vue/css/display.css";
 
+const formatString = (string) => {
+  return string.includes("ios")
+    ? string
+        .replace(/ios/, "")
+        .match(/[A-Z][a-z]+/g)
+        .join("-")
+        .toLowerCase()
+    : string.includes("md")
+    ? string
+        .replace(/md/, "icons")
+        .match(/[A-Z][a-z]+/g)
+        .join("-")
+        .toLowerCase()
+    : "";
+};
+
+import * as allIcons from "ionicons/icons";
+import { addIcons } from "ionicons";
+
+const currentIcons = Object.keys(allIcons).map((i) => {
+  return {
+    ["ios-" + formatString(i)]: allIcons[i],
+    ["md-" + formatString(i)]: allIcons[i],
+  };
+});
+const iconsObject = Object.assign({}, ...currentIcons);
+addIcons(iconsObject);
+
 /* Theme variables */
 import "./theme/variables.css";
 import "./theme/style.css";
